@@ -3,8 +3,11 @@
 #include <stdlib.h>
 
 #include "ppm.h"
+#include "alpha.h"
 
 void ppm_create_buffer(pixmap *pm, int width, int height){
+  pm->meta.id = 6;
+  pm->meta.max = 255;
   pm->pixels = calloc(sizeof(pixel),width*height);
   pm->width = width;
   pm->height = height;
@@ -18,7 +21,7 @@ void ppm_create_buffer(pixmap *pm, int width, int height){
 
 void ppm_save_image(pixmap *pm, char *filename){
   FILE *f = fopen(filename,"wb");
-  fprintf(f,"P6\n%i %i\n255\n", pm->width, pm->height);
+  fprintf(f,"P%i\n%i %i\n%i\n", pm->meta.id, pm->width, pm->height, pm->meta.max);
   int i;
   for(i = 0; i < pm->width*pm->height; i++){
     fprintf(f,"%c",pm->pixels[i].r);
@@ -28,14 +31,12 @@ void ppm_save_image(pixmap *pm, char *filename){
   fclose(f);
 }
 
-void ppm_fill_rect(pixmap *pm, int x, int y, int w, int h, pixel *p){
+void ppm_fill_rect(pixmap *pm, int x, int y, int w, int h, pixel *bg, pixel *fg){
   int i,j;
   long int location;
   for(i = y; i < y+h; i++)
   for(j = x; j < x+w; j++){
     location = j + (i * pm->width);
-    pm->pixels[location].r = p->r;
-    pm->pixels[location].g = p->g;
-    pm->pixels[location].b = p->b;
+    alpha_blend(&pm->pixels[location], bg, fg);
   }
 }
