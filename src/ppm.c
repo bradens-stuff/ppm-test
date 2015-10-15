@@ -8,7 +8,7 @@
 void ppm_create_buffer(pixmap *pm, int width, int height){
   pm->meta.id = 6;
   pm->meta.max = 255;
-  pm->pixels = calloc(sizeof(pixel),width*height);
+  pm->pixels = calloc(sizeof(pixel), width * height);
   pm->width = width;
   pm->height = height;
   int i;

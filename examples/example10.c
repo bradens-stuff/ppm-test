@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -46,6 +47,7 @@ int main(void){
   draw_random(&pm, 0x77, 0x55, 60,  2);
   draw_random(&pm, 0x99, 0x77, 30,  2);
 
-  ppm_save_image(&pm, "example10.ppm");
+  ppm_save_image(&pm, "10.ppm");
+  printf("Generated file 10.ppm\n");
   return 0;
 }
